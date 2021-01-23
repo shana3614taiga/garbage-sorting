@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/notice",
+    "pages/index/notice_view",
+    "pages/index/query",
+    "pages/index/recycle",
+    "pages/index/recycle_tips",
+    "pages/my/index",
+    "pages/my/my_exchange",
+    "pages/my/my_put",
+    "pages/my/my_ranking",
+    "pages/my/member_integral",
+    "pages/my/pubice_integral",
+    "pages/integral/index",
+    "pages/integral/tips",
+    "pages/index/login"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "分类",
+    "navigationBarBackgroundColor": "#f7f7f7",
+    "backgroundColor": "#f7f7f7"
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap57.json"
+}

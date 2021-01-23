@@ -1,0 +1,1 @@
+<view class="app"><view class="notice_view ml15 mr15 mt15"><view class="notice_view_tit f20 b">{{info.title}}</view><view class="notice_view_data f13 g9 mt2">{{$root.m0}}</view><view class="notice_view_text mt20 tj lh18"><rich-text nodes="{{$root.m1}}"></rich-text></view><view class="notice_view_bottom tr mt20 mb10">{{info.source}}</view></view></view>

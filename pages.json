@@ -1,0 +1,100 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "垃圾分类"
+			}
+		},
+		{
+			"path": "pages/index/notice",
+			"style": {
+				"navigationBarTitleText": "公告"
+			}
+		},
+		{
+			"path": "pages/index/notice_view",
+			"style": {
+				"navigationBarTitleText": "通知公告"
+			}
+		},
+		{
+			"path": "pages/index/query",
+			"style": {
+				"navigationBarTitleText": "分类查询"
+			}
+		},
+		{
+			"path": "pages/index/recycle",
+			"style": {
+				"navigationBarTitleText": "上门回收"
+			}
+		},
+		{
+			"path": "pages/index/recycle_tips",
+			"style": {
+				"navigationBarTitleText": "回收提示"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/my/my_exchange",
+			"style": {
+				"navigationBarTitleText": "兑换记录"
+			}
+		},
+		{
+			"path": "pages/my/my_put",
+			"style": {
+				"navigationBarTitleText": "投放记录"
+			}
+		},
+		{
+			"path": "pages/my/my_ranking",
+			"style": {
+				"navigationBarTitleText": "积分排行"
+			}
+		},
+		{
+			"path": "pages/my/member_integral",
+			"style": {
+				"navigationBarTitleText": "积分明细"
+			}
+		},
+		{
+			"path": "pages/my/pubice_integral",
+			"style": {
+				"navigationBarTitleText": "公益积分"
+			}
+		},
+		{
+			"path": "pages/integral/index",
+			"style": {
+				"navigationBarTitleText": "积分商城"
+			}
+		},
+		{
+			"path": "pages/integral/tips",
+			"style": {
+				"navigationBarTitleText": "提示"
+			}
+		},
+		{
+			"path": "pages/index/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "分类",
+		"navigationBarBackgroundColor": "#f7f7f7",
+		"backgroundColor": "#f7f7f7"
+	}
+}
