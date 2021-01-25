@@ -1,8 +1,9 @@
 <template>
   <view class="app">
 		<view class="my_head df align_center justify_between ml15 mr15 mt10" v-if="info">
-			<view class="my_head_pic">
-				<image src="../../static/images/photo_head3.jpg" class="db w60 br100"></image>
+			<view class="my_head_pic" @click="$refs.FaceUploadPopup.open()">
+				<image v-if="info.faceImageUrl != undefined" :src="info.faceImageUrl" class="db w60 br100"></image>
+				<image v-else src="../../static/images/photo_head3.jpg" class="db w60 br100"></image>
 			</view>
 			<view class="my_head_text flex1 ml15">
 				<view class="my_head_name f16 b">{{info.residentName}}</view>
@@ -102,6 +103,14 @@
 				<image src="../../static/images/close.png" class="w35 mt15 db" @tap="close"></image>
 			</view>
 		</uni-popup>
+		<uni-popup ref="FaceUploadPopup" type="bottom">
+			<view class="bg ml10 mr10">
+				<view @click="select(false)" style="margin-bottom: 1px;" class="bgwh item tc mb2 f18 pd10">拍照</view>
+				<view @click="select(true)" class="bgwh item tc mb2 f18 pd10">从相册选择</view>
+				<button class="bgwh mt10 f16" @click="$refs.FaceUploadPopup.close()">取消</button>
+			</view>
+		</uni-popup>
+		<helang-compress ref="helangCompress"></helang-compress>
   </view>
 </template>
 
@@ -112,25 +121,124 @@
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	import storage from '@/common/storage.js'
+	import helangCompress from '../../components/helang-compress/helang-compress'
+	import config from '@/common/config.js'
+	
+	const fs = wx.getFileSystemManager()
 	
 export default {
   name: 'app',
 	components:{
-		tkiQrcode
+		tkiQrcode,
+		helangCompress
 	},
   data () {
     return {
 			qr:'',
 			userId:storage.getUserInfo() == null?'':storage.getUserInfo().userId,
-			info:{}
+			info:{},
+			imgPath:"",
+			base64:""
     }
   },
-	onShow() {
+	onLoad() {
 		storage.checkUserInfo(true)
 		this.loadUser()
 		this.loadQrStr()
 	},
 	methods:{
+		upface(){
+			let that = this
+			uni.uploadFile({
+				url:config.base_url+'/WeChat/addFace',
+				filePath:this.imgPath,
+				name: 'file',
+				header:{
+					"Content-type":"multipart/form-data"
+				},
+				formData:{
+					userId:this.userId
+				},
+				success: (result) => {
+					let res = JSON.parse(result.data)
+					if(res.success){
+						util.showToast('上传成功')
+						fs.unlinkSync(that.imgPath)
+						that.loadUser()
+						that.$refs.FaceUploadPopup.close()
+					}else{
+						util.showToast('上传失败')
+					}
+				},
+				fail(err){
+					
+				}
+			})
+		},
+		baseTofile(){
+			let times = new Date().getTime()
+			this.imgPath = wx.env.USER_DATA_PATH + '/' + times + '.png'
+			return new Promise((resolve,reject) =>{
+				fs.writeFile({
+				  filePath: this.imgPath,
+				  data: this.base64,
+				  encoding: 'base64',
+				  success: (res) => {
+						
+						resolve()
+				  },fail(err){
+						util.showToast('转换图片失败')
+						reject()
+					}
+				})
+			})
+		},
+		compress(){
+			const that = this
+			return new Promise((resolve,reject)=>{
+				uni.compressImage({
+					src:that.imgPath,
+					quality:0,
+					success(res) {
+						that.imgPath = res.tempFilePath
+						uni.getFileSystemManager().readFile({
+							filePath: that.imgPath,
+							encoding: 'base64',
+							success(res){
+								that.base64 = res.data
+								resolve()
+							}
+						})
+					},
+					fail(err) {
+						reject()
+					}
+				})
+			})
+		},
+		select(val){
+			let type = ["camera"]
+			if(val){
+				type = ["album"]
+			}
+			const that = this
+			uni.chooseImage({
+				sizeType:['compressed'],
+				count:1,
+				sourceType:type,
+				success(res) {
+					that.imgPath = res.tempFiles[0].path
+					that.compress().then(res =>{
+						that.baseTofile().then(res =>{
+							that.upface()
+						})
+					})
+				},
+				fail(err) {
+					util.showToast(err)
+				}
+			})
+		},
 		qrR(val){
 			uni.hideLoading()
 		},
@@ -151,7 +259,7 @@ export default {
 		loadUser(){
 			services.my.getUser(this.userId).then(res =>{
 				if(res.success){
-					this.info = JSON.parse(res.data)
+					this.info = JSON.parse(res.data);console.log(this.info)
 				}
 			})
 		},
