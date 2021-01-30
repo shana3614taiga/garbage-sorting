@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "我的",
-  "usingComponents": {
-    "uni-popup": "/components/uni-popup/uni-popup",
-    "tki-qrcode": "/components/tki-qrcode/tki-qrcode",
-    "helang-compress": "/components/helang-compress/helang-compress"
-  }
-}

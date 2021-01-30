@@ -1,7 +1,0 @@
-
-.bg{background-color: #F8F8F8;overflow: hidden;
-    border-top-left-radius: 15px;
-		border-top-right-radius: 15px;}
-.mb1{margin-bottom: 1px;}
-.item{color: #000000;margin-bottom: 1px;}
-
