@@ -36,7 +36,8 @@
 			<view class="index_integral df align_center justify_between bgwh mt15 ml15 mr15 br5">
 				<view class="index_integral_text" v-if="userId">
 					<view class="f12 g9">你的当前积分</view>
-					<view class="f22 g3">{{info.point}}</view>
+					<view class="f22 g3" v-if="info.point">{{info.point}}</view>
+					<view class="f22 g3" v-else>0</view>
 				</view>
 				<view class="index_integral_text" v-else>
 					<view class="f12 g9">未登录</view>
@@ -115,16 +116,21 @@
 			uniPopupDialog,
 			tkiQrcode
 		},
+		beforeDestroy() {
+			uni.removeStorageSync('qrpopup')
+		},
 		data() {
 			return {
 				newNotice:'',
-				qr:'',
+				qr:'init data scan to this string error',
+				qrerr:'init data scan to this string error',
 				userId: storage.getUserInfo() == null?'':storage.getUserInfo().userId,
 				integarl:0,
-				info:null
+				info:null,
 			}
 		},
 		onShow() {
+			// storage.checkUserInfo(true)
 			this.loadNewNotice()
 			this.loadQrStr()
 			this.loadUser()
@@ -145,6 +151,10 @@
 					util.showToast('未登录')
 					return
 				}
+				if(this.qrerr == this.qr){
+					util.showToast('用户未绑定')
+					return
+				}
 				uni.showLoading({
 					title:'加载二维码中...'
 				})
@@ -158,21 +168,36 @@
 				services.getNewNotice(this.userId).then(res =>{
 					if(res.success){
 						this.newNotice = JSON.parse(res.data).title
+					}else{
+						util.showToast(res.message)
 					}
+				}).catch(err =>{
+					util.showToast(err.message)
 				})
 			},
 			loadQrStr(){
 				services.getQr(this.userId).then(res =>{
 					if(res.success){
 						this.qr = res.data
+						if(uni.getStorageSync('qrpopup') != ""){
+							this.open()
+						}
+					}else{
+						util.showToast(res.message)
 					}
+				}).catch(err =>{
+					util.showToast(err.message)
 				})
 			},
 			loadUser(){
 				services.my.getUser(this.userId).then(res =>{
 					if(res.success){
 						this.info = JSON.parse(res.data)
+					}else{
+						util.showToast(res.message)
 					}
+				}).catch(err =>{
+					util.showToast(err.message)
 				})
 			},
 		}

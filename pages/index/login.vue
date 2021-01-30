@@ -82,6 +82,7 @@ export default {
 				services.login(this.code).then(res =>{
 					if(res.data){
 						storage.setUserInfo(JSON.parse(res.data))
+						uni.setStorageSync('qrpopup',true)
 						uni.redirectTo({
 							url:"/pages/index/index"
 						})

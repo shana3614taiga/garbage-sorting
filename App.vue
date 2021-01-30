@@ -7,6 +7,7 @@
 			console.log('App Show')
 		},
 		onHide: function() {
+			uni.setStorageSync('qrpopup',true)
 			console.log('App Hide')
 		}
 	}

@@ -24,7 +24,8 @@
 		<view class="df align_center ml15 mr15 mt20 bgwh br6 my_integral">
 			<navigator url="/pages/my/member_integral" class="member_integral df align_center justify_around flex_column wp50 flex1">
 				<view class="f12 g8">会员积分</view>
-				<view class="f22 b g3">{{info.point}}</view>
+				<view v-if="info.point" class="f22 b g3">{{info.point}}</view>
+				<view v-else class="f22 b g3">0</view>
 			</navigator>
 			<navigator url="" class="member_integral df align_center justify_around flex_column wp50 flex1 my_integral_rt">
 				<view class="f12 g8">公益积分</view>
